@@ -19,3 +19,13 @@ SELECT nome from aluno where nome like 'A%'
 SELECT nome from aluno where curso = 'Computacao' Or 'Engenharia'
 
 SELECT nome from disciplina where carga_horaria BETWEEN '60' and '80'
+
+SELECT COUNT(id) FROM aluno 
+
+SELECT AVG(nota) from matricula 
+
+SELECT MAX(nota) from matricula
+
+SELECT MIN(nota) from matricula
+
+SELECT SUM(carga_horaria) from disciplina
