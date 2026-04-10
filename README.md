@@ -99,3 +99,47 @@ SELECT semestre,count(aluno_id) from matricula GROUP by semestre
 Mostre os cursos que possuem mais de 1 aluno cadastrado.
 
 SELECT curso from aluno GROUP by curso having COUNT(id) > 1
+
+## Questão 21
+
+Liste o nome dos alunos e a situação de suas matrículas.
+
+SELECT a.id, a.nome, m.situacao
+FROM aluno a
+JOIN matricula m ON a.id = m.aluno_id
+
+## Questão 22
+
+Liste o nome dos alunos e o nome das disciplinas em que estão matriculados.
+
+## Questão 23
+
+Liste o nome do aluno, o nome da disciplina e a nota.
+
+## Questão 24
+
+Liste apenas os alunos matriculados em disciplinas do departamento Computacao.
+
+## Questão 25
+
+Mostre o nome dos alunos que tiveram matrícula com situação Reprovado.
+
+## Questão 26
+
+Mostre o nome dos alunos de Computacao e as disciplinas que eles cursaram.
+
+## Questão 27
+
+Mostre a média de notas por aluno.
+
+## Questão 28
+
+Mostre a quantidade de disciplinas cursadas por cada aluno.
+
+## Questão 29
+
+Liste os alunos cuja média de notas foi maior que 8.
+
+## Questão 30
+
+Mostre o departamento e a quantidade de matrículas em disciplinas de cada departamento.
