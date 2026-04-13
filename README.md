@@ -3,7 +3,7 @@
 ## Questão 1 
 Liste todos os alunos cadastrados.
 
-SELECT nome from aluno
+  SELECT nome from aluno
 
 ## Questão 2
 Mostre apenas o nome e o curso dos alunos.
