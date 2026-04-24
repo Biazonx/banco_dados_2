@@ -112,34 +112,82 @@ JOIN matricula m ON a.id = m.aluno_id
 
 Liste o nome dos alunos e o nome das disciplinas em que estão matriculados.
 
+SELECT a.nome, d.nome
+FROM aluno a
+JOIN matricula m ON a.id = m.aluno_id
+JOIN disciplina d ON d.id = m.disciplina_id;
+
 ## Questão 23
 
 Liste o nome do aluno, o nome da disciplina e a nota.
+
+SELECT a.nome, d.nome, m.nota
+FROM aluno a
+JOIN matricula m ON a.id = m.aluno_id
+JOIN disciplina d ON d.id = m.disciplina_id;
 
 ## Questão 24
 
 Liste apenas os alunos matriculados em disciplinas do departamento Computacao.
 
+SELECT a.nome
+FROM aluno a
+JOIN matricula m ON a.id = m.aluno_id
+JOIN disciplina d ON d.id = m.disciplina_id
+WHERE d.departamento = 'Computacao';
+
 ## Questão 25
 
 Mostre o nome dos alunos que tiveram matrícula com situação Reprovado.
+
+SELECT a.nome
+FROM aluno a
+JOIN matricula m ON a.id = m.aluno_id
+WHERE m.situacao = 'Reprovado';
 
 ## Questão 26
 
 Mostre o nome dos alunos de Computacao e as disciplinas que eles cursaram.
 
+SELECT a.nome, d.nome
+FROM aluno a
+JOIN matricula m ON a.id = m.aluno_id
+JOIN disciplina d ON d.id = m.disciplina_id
+WHERE a.curso = 'Computacao';
+
 ## Questão 27
 
 Mostre a média de notas por aluno.
+
+SELECT a.nome, AVG(m.nota)
+FROM aluno a
+JOIN matricula m ON a.id = m.aluno_id
+GROUP BY a.nome;
 
 ## Questão 28
 
 Mostre a quantidade de disciplinas cursadas por cada aluno.
 
+SELECT a.nome, COUNT(m.disciplina_id)
+FROM aluno a
+JOIN matricula m ON a.id = m.aluno_id
+GROUP BY a.nome;
+
 ## Questão 29
 
 Liste os alunos cuja média de notas foi maior que 8.
 
+SELECT a.nome
+FROM aluno a
+JOIN matricula m ON a.id = m.aluno_id
+GROUP BY a.nome
+HAVING AVG(m.nota) > 8;
+
 ## Questão 30
 
 Mostre o departamento e a quantidade de matrículas em disciplinas de cada departamento.
+
+SELECT d.departamento, COUNT(m.aluno_id)
+FROM disciplina d
+JOIN matricula m ON d.id = m.disciplina_id
+GROUP BY d.departamento;
