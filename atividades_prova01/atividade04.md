@@ -75,6 +75,7 @@ O valor pode permanecer o mesmo ou mudar dependendo do nível de isolamento conf
 **Pergunta 11**  
 Que tipo de fenômeno esse teste procura identificar?
 Esse teste procura identificar o fenômeno da leitura não repetível (non-repeatable read), em que uma mesma consulta retorna valores diferentes dentro da mesma transação.
+
 ---
 
 **Pergunta 12**  
