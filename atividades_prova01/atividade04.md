@@ -26,60 +26,72 @@ SELECT * FROM contas;
 
 **Pergunta 1**  
 Qual é a finalidade de manter dados iniciais conhecidos antes dos testes de concorrência?
+
 A finalidade de manter dados iniciais conhecidos é facilitar a análise dos resultados dos testes, permitindo identificar claramente as alterações causadas pelas transações concorrentes.
 
 **Pergunta 2**  
 Por que é importante que a tabela esteja em um estado consistente antes do início dos experimentos?
+
 É importante que a tabela esteja consistente para garantir que os experimentos comecem sem erros ou dados incorretos, permitindo observar corretamente os efeitos da concorrência.
 
 ---
 
 **Pergunta 3**  
 O que aconteceu com a operação realizada na Sessão 2?
+
 A operação da Sessão 1 ficou bloqueada aguardando a liberação do registro pela Sessão 1. Ela só continuou após o COMMIT da primeira sessão.
 
 **Pergunta 4**  
 Por que a segunda sessão precisou aguardar?
+
 A segunda sessão precisou aguardar porque a linha com id = 1 estava bloqueada pela Sessão 1, evitando modificações simultâneas no mesmo dado.
 
 **Pergunta 5**  
 Qual é a função do comando `FOR UPDATE` nesse experimento?
+
 O FOR UPDATE bloqueia os registros selecionados para edição exclusiva até o final da transação, impedindo alterações concorrentes.
 
 ---
 
 **Pergunta 6**  
 Por que, nesse caso, as duas transações tendem a coexistir sem espera significativa?
+
 As transações coexistem sem espera significativa porque estão alterando registros diferentes da tabela, sem conflito direto entre os bloqueios.
 
 **Pergunta 7**  
 O que esse comportamento revela sobre bloqueios em nível de linha?
+
 Esse comportamento mostra que os bloqueios em nível de linha permitem maior concorrência, já que apenas as linhas afetadas ficam bloqueadas.
 
 ---
 
 **Pergunta 8**  
 Qual era o objetivo de consultar o mesmo registro em outra sessão antes do `COMMIT`?
+
 O objetivo era verificar se outra sessão conseguiria visualizar alterações ainda não confirmadas pela transação original.
 
 **Pergunta 9**  
 Como esse experimento se relaciona com o conceito de isolamento?
+
 Esse experimento demonstra o isolamento, pois alterações não confirmadas normalmente não ficam visíveis para outras transações.
 
 ---
 
 **Pergunta 10**  
 O valor lido na Sessão 1 permaneceu o mesmo ou mudou?
+
 O valor pode permanecer o mesmo ou mudar dependendo do nível de isolamento configurado no banco de dados.
 
 **Pergunta 11**  
 Que tipo de fenômeno esse teste procura identificar?
+
 Esse teste procura identificar o fenômeno da leitura não repetível (non-repeatable read), em que uma mesma consulta retorna valores diferentes dentro da mesma transação.
 
 ---
 
 **Pergunta 12**  
 Por que operações concorrentes sobre o mesmo registro exigem maior controle?
+
 Operações concorrentes sobre o mesmo registro exigem maior controle para evitar conflitos, perda de dados e inconsistências causadas por alterações simultâneas.
 
 **Pergunta 13**  
@@ -90,122 +102,149 @@ Pode surgir o problema de atualização perdida (lost update), em que a alteraç
 
 **Pergunta 14**  
 Qual evidência mostra que havia um bloqueio ativo sobre o registro?
+
 A evidência do bloqueio é que a operação da Sessão 2 ficou aguardando sem concluir enquanto a Sessão 1 mantinha o lock ativo.
 
 **Pergunta 15**  
 Por que a liberação do lock depende do fim da transação?
+
 A liberação do lock depende do fim da transação porque o banco precisa garantir que nenhuma outra operação altere o dado antes da confirmação (COMMIT) ou cancelamento (ROLLBACK).
 
 ---
 
 **Pergunta 16**  
 Por que a segunda leitura com `FOR UPDATE` não pôde prosseguir imediatamente?
+
 A segunda leitura com FOR UPDATE não pôde prosseguir porque a primeira transação já possuía um bloqueio exclusivo sobre o registro.
 
 **Pergunta 17**  
 Em que essa situação difere de uma consulta `SELECT` comum?
+
 Uma consulta SELECT comum normalmente apenas lê os dados sem bloquear alterações. Já o FOR UPDATE cria um lock para impedir modificações concorrentes.
 
 ---
 
 **Pergunta 18**  
 Qual seria o saldo correto ao final, caso ambas as operações fossem consideradas corretamente?
+
 O saldo correto seria 700, pois as duas subtrações deveriam ser aplicadas ao saldo inicial de 1000.
 
 **Pergunta 19**  
 Por que o resultado 800 caracteriza uma atualização perdida?
+
 O resultado 800 caracteriza atualização perdida porque a alteração feita pela Transação A foi sobrescrita pela Transação B.
 
 ---
 
 **Pergunta 20**  
 Por que inserções em linhas diferentes nem sempre geram conflito direto?
+
 Inserções em linhas diferentes nem sempre geram conflito porque cada transação trabalha em registros distintos, sem disputar o mesmo dado.
 
 **Pergunta 21**  
 O que esse experimento mostra sobre concorrência quando não há disputa pelo mesmo registro?
+
 Esse experimento mostra que o banco consegue executar transações simultaneamente com eficiência quando não existe disputa pelo mesmo registro.
 
 ---
 
 **Pergunta 22**  
 Quais impactos um bloqueio mantido por muito tempo pode causar em um sistema real?
+
 Bloqueios prolongados podem causar lentidão, filas de espera, redução de desempenho e até travamentos em sistemas com muitos usuários.
 
 **Pergunta 23**  
 Por que transações longas tendem a ser indesejáveis em ambientes concorrentes?
+
 Transações longas são indesejáveis porque mantêm locks ativos por mais tempo, aumentando a chance de bloqueios, espera e conflitos entre usuários.
 
 ---
 
 **Pergunta 24**  
 Como verificar se o banco permaneceu consistente após todos os cenários executados?
+
 É possível verificar a consistência analisando se os saldos e registros finais correspondem corretamente às operações realizadas, sem valores incorretos ou perdas de dados.
 
 **Pergunta 25**  
 Por que a análise final dos dados é importante após testes de concorrência?
+
 A análise final é importante para confirmar que os mecanismos de controle de concorrência funcionaram corretamente e que o banco permaneceu íntegro após os testes.
 
 ---
 
 ### Questão 26
 Explique o que é concorrência em banco de dados.
+
 Concorrência em banco de dados é a execução simultânea de várias transações por diferentes usuários ou processos acessando os mesmos dados ou recursos do sistema.
 
 ### Questão 27
 Descreva o papel dos bloqueios no controle de concorrência.
+
 Os bloqueios controlam o acesso aos dados, impedindo que várias transações modifiquem o mesmo registro ao mesmo tempo e evitando inconsistências.
 
 ### Questão 28
 Explique a diferença entre acessar registros iguais e registros diferentes em transações simultâneas.
+
 Quando transações acessam registros diferentes, geralmente podem executar ao mesmo tempo sem conflito. Já ao acessar o mesmo registro, pode haver espera e bloqueios para proteger os dados.
 
 ### Questão 29
 Por que `FOR UPDATE` é importante em determinadas operações críticas?
+
 O FOR UPDATE é importante porque bloqueia registros que serão alterados, evitando modificações simultâneas em operações críticas como transferências e reservas.
 
 ### Questão 30
 O que significa dizer que uma transação ficou esperando outra liberar um recurso?
+
 Significa que uma transação não pôde continuar porque outra já estava utilizando ou bloqueando aquele recurso até finalizar sua operação.
 
 ### Questão 31
 Explique o conceito de atualização perdida.
+
 Atualização perdida ocorre quando duas transações alteram o mesmo dado e a alteração de uma sobrescreve a da outra.
 
 ### Questão 32
 Descreva por que o isolamento é essencial em sistemas multiusuário.
+
 O isolamento é essencial porque impede que usuários interfiram nas transações uns dos outros, mantendo os dados corretos e confiáveis.
 
 ### Questão 33
 Explique como uma leitura pode ser afetada por outra transação ainda não concluída.
+
 Uma leitura pode ser afetada se visualizar alterações ainda não confirmadas de outra transação, gerando informações temporárias ou inconsistentes.
 
 ### Questão 34
 Por que transações longas podem prejudicar o desempenho de sistemas concorrentes?
+
 Transações longas prejudicam o desempenho porque mantêm locks ativos por muito tempo, aumentando filas de espera e reduzindo a concorrência.
 
 ### Questão 35
 Qual é a relação entre concorrência e consistência dos dados?
+
 A concorrência precisa ser controlada para preservar a consistência dos dados, evitando conflitos e alterações incorretas.
 
 ### Questão 36
 Descreva um exemplo real em que duas transações possam disputar o mesmo dado.
+
 Um exemplo real é dois clientes tentando comprar o último ingresso disponível de um evento ao mesmo tempo.
 
 ### Questão 37
 Explique por que nem toda operação simultânea gera conflito.
+
 Nem toda operação simultânea gera conflito porque muitas transações trabalham em registros diferentes, sem disputar os mesmos dados.
 
 ### Questão 38
 Como o banco de dados contribui para impedir que alterações simultâneas corrompam os dados?
+
 O banco utiliza mecanismos como locks, controle de concorrência e níveis de isolamento para evitar que alterações simultâneas corrompam os dados.
 
 ### Questão 39
 Explique o que aconteceria em um sistema bancário sem mecanismos de lock.
+
 Sem mecanismos de lock, poderiam ocorrer perdas de dados, saldos incorretos e inconsistências causadas por alterações simultâneas não controladas.
 
 ### Questão 40
 Qual a importância de observar a ordem de execução das transações em testes práticos?
+
 Observar a ordem de execução é importante porque o resultado das transações pode variar dependendo de qual operação ocorre primeiro, afetando bloqueios e consistência dos dados.
 
 ---
