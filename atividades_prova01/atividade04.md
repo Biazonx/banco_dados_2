@@ -71,6 +71,7 @@ Esse experimento demonstra o isolamento, pois alterações não confirmadas norm
 **Pergunta 10**  
 O valor lido na Sessão 1 permaneceu o mesmo ou mudou?
 O valor pode permanecer o mesmo ou mudar dependendo do nível de isolamento configurado no banco de dados.
+
 **Pergunta 11**  
 Que tipo de fenômeno esse teste procura identificar?
 Esse teste procura identificar o fenômeno da leitura não repetível (non-repeatable read), em que uma mesma consulta retorna valores diferentes dentro da mesma transação.
@@ -219,11 +220,11 @@ Um sistema bancário multiusuário precisa permitir operações simultâneas sem
 - risco de atualização perdida
 - análise da consistência final dos dados após execuções concorrentes
 
--- =====================================================
--- TESTE 1 - BLOQUEIO EXPLÍCITO COM FOR UPDATE
--- =====================================================
+# Teste 1 — Bloqueio Explícito com FOR UPDATE
 
--- Sessão 1
+## Sessão 1
+
+```sql
 START TRANSACTION;
 
 SELECT * FROM contas
@@ -233,89 +234,87 @@ FOR UPDATE;
 UPDATE contas
 SET saldo = saldo - 100
 WHERE id = 1;
+```
 
--- NÃO executar COMMIT ainda
+## Sessão 2
 
-
--- Sessão 2
+```sql
 START TRANSACTION;
 
 UPDATE contas
 SET saldo = saldo + 50
 WHERE id = 1;
+```
 
--- A transação ficará aguardando
+## Finalização
 
-
--- Voltar para Sessão 1
+```sql
 COMMIT;
+```
 
+---
 
--- Depois finalizar Sessão 2
-COMMIT;
+# Teste 2 — Concorrência em Registros Diferentes
 
--- =====================================================
--- TESTE 2 - CONCORRÊNCIA EM REGISTROS DIFERENTES
--- =====================================================
+## Sessão 1
 
--- Sessão 1
+```sql
 START TRANSACTION;
 
 UPDATE contas
 SET saldo = saldo - 50
 WHERE id = 1;
+```
 
+## Sessão 2
 
--- Sessão 2
+```sql
 START TRANSACTION;
 
 UPDATE contas
 SET saldo = saldo + 70
 WHERE id = 4;
+```
 
+## Finalização
 
--- Finalizar ambas
+```sql
 COMMIT;
 
--- Consultar resultado
 SELECT * FROM contas;
+```
 
--- =====================================================
--- TESTE 3 - ESPERA ENTRE TRANSAÇÕES
--- =====================================================
+---
 
--- Sessão 1
+# Teste 3 — Espera Entre Transações
+
+## Sessão 1
+
+```sql
 START TRANSACTION;
 
 SELECT * FROM contas
 WHERE id = 2
 FOR UPDATE;
+```
 
--- Manter transação aberta
+## Sessão 2
 
-
--- Sessão 2
+```sql
 START TRANSACTION;
 
 UPDATE contas
 SET saldo = saldo + 10
 WHERE id = 2;
+```
 
--- Aguardar bloqueio
+---
 
+# Teste 4 — Atualização Perdida
 
--- Voltar para Sessão 1
-COMMIT;
+## Sessão 1
 
-
--- Finalizar Sessão 2
-COMMIT;
-
--- =====================================================
--- TESTE 4 - RISCO DE ATUALIZAÇÃO PERDIDA
--- =====================================================
-
--- Sessão 1
+```sql
 START TRANSACTION;
 
 SELECT saldo
@@ -325,9 +324,11 @@ WHERE id = 4;
 UPDATE contas
 SET saldo = saldo - 100
 WHERE id = 4;
+```
 
+## Sessão 2
 
--- Sessão 2
+```sql
 START TRANSACTION;
 
 SELECT saldo
@@ -337,57 +338,36 @@ WHERE id = 4;
 UPDATE contas
 SET saldo = saldo - 200
 WHERE id = 4;
+```
 
+---
 
--- Finalizar ambas
-COMMIT;
+# Teste 5 — Leitura Durante Transação
 
--- Consultar resultado final
-SELECT * FROM contas
-WHERE id = 4;
+## Sessão 1
 
--- =====================================================
--- TESTE 5 - LEITURA DURANTE TRANSAÇÃO NÃO FINALIZADA
--- =====================================================
-
--- Sessão 1
+```sql
 START TRANSACTION;
 
 UPDATE contas
 SET saldo = saldo - 200
 WHERE id = 3;
+```
 
--- NÃO finalizar
+## Sessão 2
 
-
--- Sessão 2
+```sql
 SELECT * FROM contas
 WHERE id = 3;
+```
 
--- Voltar para Sessão 1
-ROLLBACK;
+---
 
--- =====================================================
--- TESTE 6 - ANÁLISE FINAL DA CONSISTÊNCIA
--- =====================================================
+# Análise Final
 
+```sql
 SELECT * FROM contas;
-
--- Verificar:
--- 1. Se os saldos permanecem corretos
--- 2. Se não houve perda de atualização
--- 3. Se os locks impediram conflitos
--- 4. Se as transações concorrentes mantiveram a integridade
-
-### Objetivos
-Ao final da atividade, o estudante deve ser capaz de:
-
-- compreender o conceito de concorrência
-- identificar situações de bloqueio
-- analisar o efeito de locks em duas sessões simultâneas
-- perceber quando há disputa por recursos
-- discutir riscos de inconsistência em operações concorrentes
-- relacionar concorrência com integridade e desempenho
+```
 
 ### Tarefa final
 Com base nos testes realizados, produza um texto explicando:
