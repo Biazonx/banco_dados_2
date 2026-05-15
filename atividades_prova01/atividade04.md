@@ -393,6 +393,7 @@ Dessa forma, concorrência, locks e isolamento trabalham em conjunto para preser
 
 ### Questão 41
 Considerando todos os experimentos realizados, explique de forma integrada como concorrência, bloqueios e isolamento atuam juntos para evitar inconsistências no banco de dados.
+
 Concorrência, bloqueios e isolamento atuam juntos para evitar inconsistências em bancos de dados multiusuário. A concorrência permite que várias transações ocorram simultaneamente, aumentando o desempenho do sistema.
 Porém, isso pode gerar conflitos quando diferentes transações acessam o mesmo dado ao mesmo tempo.
 Os bloqueios controlam esse acesso, impedindo alterações simultâneas indevidas. Com mecanismos como FOR UPDATE, o banco garante que apenas uma transação modifique determinado registro enquanto as outras aguardam a liberação do lock. 
